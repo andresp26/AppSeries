@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:flutterapp/tabs/themenotificator.dart';
+import 'package:provider/provider.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 
 class ComingSoonPage extends StatefulWidget {
@@ -16,8 +17,7 @@ class _ComingSoonPage extends State<ComingSoonPage> {
    
     final themeProvider = Provider.of<DynamicTheme>(context);  
     return Scaffold(
-      appBar: AppBar(title: Text('Perfil y ajustes')),
-
+      appBar: AppBar(title: Text('Ajustes') ,centerTitle: true,),      
       body: SettingsList(
         sections: [
           SettingsSection(

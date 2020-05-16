@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/detailchapter.dart';
+import 'Animation/FadeAnimation.dart';
 import 'data.dart';
 import 'dart:ui';
 
@@ -9,54 +11,18 @@ class DetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double c_width = MediaQuery.of(context).size.width * 0.95;
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Detalle ' + SeriesData().series[data]['title'].toString()),
+        centerTitle: true,
+      ),
       body: _layoudDetails(context),
-      backgroundColor: Colors.black87,
-//      new Container(
-//        color: Colors.black87,
-//        child: ListView(
-//          children: <Widget>[
-//            _picture(context),
-//            //   Container(
-//
-////                child: new BackdropFilter(
-////                  filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
-////                  child: Stack(
-////                    children: <Widget>[
-////                      Positioned(
-////                        top: 10.0,
-////                        left: 5.0,
-////                        child: IconButton(
-////                          icon: Icon(Icons.arrow_back, color: Colors.white),
-////                          onPressed: () {
-////                            Navigator.pop(context);
-////                          },
-////                        ),
-////                      ),
-////                      Positioned(
-////                        left: 120.0,
-////                        top: 80,
-////                        child: IconButton(
-////                          icon: Icon(Icons.play_circle_outline,
-////                              color: Colors.white54, size: 100),
-////                          onPressed: () {},
-////                        ),
-////                      )
-////                    ],
-////                  ),
-////                )
-//            //            ),
-//
-//          ],
-//        ),
-//      ),
     );
   }
 
   Widget _picture(context) => Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 2,
+        height: MediaQuery.of(context).size.height / 1.5,
         decoration: BoxDecoration(
           image: new DecorationImage(
               fit: BoxFit.cover,
@@ -87,10 +53,7 @@ class DetailsPage extends StatelessWidget {
             SizedBox(width: 10),
             Text(
               SeriesData().series[data]['title'],
-              style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             )
           ],
         ),
@@ -116,9 +79,8 @@ class DetailsPage extends StatelessWidget {
                       ? '  1h 52min'
                       : ''),
               style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white.withOpacity(0.6),
-                  fontWeight: FontWeight.w200),
+                fontSize: 15,
+              ),
             ),
           ],
         ),
@@ -136,8 +98,6 @@ class DetailsPage extends StatelessWidget {
                   SeriesData().series[data]['description'],
                   style: new TextStyle(
                     fontSize: 12,
-                    color: Colors.white30,
-                    fontWeight: FontWeight.w100,
                   ),
                   textAlign: TextAlign.left,
                   softWrap: true,
@@ -157,8 +117,6 @@ class DetailsPage extends StatelessWidget {
                   'Starring : ' + SeriesData().series[data]['starring'],
                   style: new TextStyle(
                     fontSize: 13,
-                    color: Colors.white54,
-                    fontWeight: FontWeight.w100,
                   ),
                   textAlign: TextAlign.left,
                   softWrap: true,
@@ -179,12 +137,12 @@ class DetailsPage extends StatelessWidget {
               Column(
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.thumb_up, color: Colors.white),
+                    icon: Icon(Icons.thumb_up),
                     onPressed: () {},
                   ),
                   Text(
                     'Me gusta',
-                    style: TextStyle(color: Colors.white30, fontSize: 10),
+                    style: TextStyle(fontSize: 10),
                   )
                 ],
               ),
@@ -194,12 +152,12 @@ class DetailsPage extends StatelessWidget {
               Column(
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.share, color: Colors.white),
+                    icon: Icon(Icons.share),
                     onPressed: () {},
                   ),
                   Text(
                     'Compartir',
-                    style: TextStyle(color: Colors.white30, fontSize: 10),
+                    style: TextStyle(fontSize: 10),
                   )
                 ],
               ),
@@ -235,7 +193,9 @@ class DetailsPage extends StatelessWidget {
                 ),
                 Text(
                   'Episodios',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 )
               ],
             ),
@@ -249,16 +209,21 @@ class DetailsPage extends StatelessWidget {
             ? FlatButton(
                 onPressed: () {},
                 child: Container(
-//                  decoration: BoxDecoration(
-//                      color: Colors.grey.withAlpha(100),
-//                      borderRadius: BorderRadius.circular(5)),
-//                  width: 120,
-//                  height: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.withAlpha(100),
+                      borderRadius: BorderRadius.circular(5)),
+                  width: 120,
+                  height: 40,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('Temporadas'),                   
-
+                      Text(
+                        'Temporada 1',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                      )
                     ],
                   ),
                 ),
@@ -269,9 +234,9 @@ class DetailsPage extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        episodeBlock('1.' + SeriesData().series[data]['capitulo1']),
-        episodeBlock('2.' + SeriesData().series[data]['capitulo2']),
-        episodeBlock('3.' + SeriesData().series[data]['capitulo3'])
+        episodeBlock('1.' + SeriesData().series[data]['capitulo1'], context),
+        episodeBlock('2.' + SeriesData().series[data]['capitulo2'], context),
+        episodeBlock('3.' + SeriesData().series[data]['capitulo3'], context)
       ],
     );
   }
@@ -282,17 +247,18 @@ class DetailsPage extends StatelessWidget {
       return SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          _picture(context),
+          FadeAnimation(1.5, _picture(context)),
           detailSeason(context),
         ],
       ));
     } else {
       return Row(
         children: <Widget>[
-          _pictureLandScape(context),
+          FadeAnimation(1.5, _pictureLandScape(context)),
           Container(
             width: MediaQuery.of(context).size.width / 1.8,
             height: MediaQuery.of(context).size.height,
+            child: detailSeasonLandScape(context),
           )
         ],
       );
@@ -310,13 +276,10 @@ class DetailsPage extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              SizedBox(width: 10),
+              SizedBox(width: 30),
               Text(
                 SeriesData().series[data]['title'],
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
               )
             ],
           ),
@@ -326,7 +289,7 @@ class DetailsPage extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              SizedBox(width: 10),
+              SizedBox(width: 30),
               Text(
                 SeriesData().series[data]['match'],
                 style: TextStyle(
@@ -334,7 +297,7 @@ class DetailsPage extends StatelessWidget {
                     color: Colors.green.withGreen(200),
                     fontWeight: FontWeight.w600),
               ),
-              SizedBox(width: 20),
+              SizedBox(width: 50),
               Text(
                 SeriesData().series[data]['year'] +
                     '  16+' +
@@ -343,27 +306,26 @@ class DetailsPage extends StatelessWidget {
                         : ''),
                 style: TextStyle(
                     fontSize: 15,
-                    color: Colors.white.withOpacity(0.6),
-                    fontWeight: FontWeight.w200),
+                    
+                    fontWeight: FontWeight.w600),
               ),
             ],
           ),
           SizedBox(
             height: 10,
-            width: double.infinity,
+            width: 50,
           ),
           Container(
-            width: 10,
+            width: double.infinity,
             child: Row(
               children: <Widget>[
-                SizedBox(width: 10),
+                SizedBox(width: 20),
                 Flexible(
                   child: new Text(
                     SeriesData().series[data]['description'],
                     style: new TextStyle(
-                      fontSize: 12,
-                      color: Colors.white30,
-                      fontWeight: FontWeight.w100,
+                      fontSize: 12,                      
+                      fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.left,
                     softWrap: true,
@@ -377,16 +339,15 @@ class DetailsPage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 SizedBox(
-                  width: 10,
+                  width: 20,
                   height: 10,
                 ),
                 Flexible(
                   child: new Text(
                     'Starring : ' + SeriesData().series[data]['starring'],
                     style: new TextStyle(
-                      fontSize: 13,
-                      color: Colors.white54,
-                      fontWeight: FontWeight.w100,
+                      fontSize: 13,                      
+                      fontWeight: FontWeight.w300,
                     ),
                     textAlign: TextAlign.left,
                     softWrap: true,
@@ -407,12 +368,12 @@ class DetailsPage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.thumb_up, color: Colors.white),
+                      icon: Icon(Icons.thumb_up),
                       onPressed: () {},
                     ),
                     Text(
                       'Me gusta',
-                      style: TextStyle(color: Colors.white30, fontSize: 10),
+                      style: TextStyle( fontSize: 10),
                     )
                   ],
                 ),
@@ -423,12 +384,12 @@ class DetailsPage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.share, color: Colors.white),
+                      icon: Icon(Icons.share),
                       onPressed: () {},
                     ),
                     Text(
                       'Compartir',
-                      style: TextStyle(color: Colors.white30, fontSize: 10),
+                      style: TextStyle( fontSize: 10),
                     )
                   ],
                 ),
@@ -450,7 +411,7 @@ class DetailsPage extends StatelessWidget {
           Row(
             children: <Widget>[
               SizedBox(
-                width: 20,
+                width: 50,
               ),
               Column(
                 children: <Widget>[
@@ -460,64 +421,59 @@ class DetailsPage extends StatelessWidget {
                       height: 20,
                       width: 80,
                     ),
-                    height: 2.0,
+                    height: 2,
                   ),
                   Text(
                     'Episodios',
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    style: TextStyle(fontSize: 15),
                   )
                 ],
               ),
             ],
           ),
           SizedBox(
-            width: double.infinity,
+            width: 100,
             height: 10,
           ),
-          SeriesData().series[data]['movie'] == 'false'
-              ? FlatButton(
+            FlatButton(
                   onPressed: () {},
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.grey.withAlpha(100),
                         borderRadius: BorderRadius.circular(5)),
-                    width: 120,
+                    width: 150,
                     height: 40,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new DropdownButton<String>(
-                          items: <String>['A', 'B', 'C', 'D'].map((String value) {
-                            return new DropdownMenuItem<String>(
-                              value: value,
-                              child: new Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (_) {},
+                        Text(
+                          'Temporada 1',
+                          style: TextStyle(fontSize: 15),
                         ),
                         Icon(
                           Icons.arrow_drop_down,
-                          color: Colors.white,
                         )
                       ],
                     ),
                   ),
                 )
-              : SizedBox(
-                  height: 10,
-                ),
+              ,
           SizedBox(
-            height: 10,
+            height: 20,
           ),
-          episodeBlock('1.' + SeriesData().series[data]['capitulo1']),
-          episodeBlock('2.' + SeriesData().series[data]['capitulo2']),
-          episodeBlock('3.' + SeriesData().series[data]['capitulo3'])
+          episodeBlockLandscape(
+              '1.' + SeriesData().series[data]['capitulo1'], context),
+          episodeBlockLandscape(
+              '2.' + SeriesData().series[data]['capitulo2'], context),
+          episodeBlockLandscape(
+              '3.' + SeriesData().series[data]['capitulo3'], context)
         ],
       ),
     );
   }
 
-  Container episodeBlock(epTitle) {
+  Container episodeBlock(epTitle, context) {
     return Container(
       height: 150,
       padding: EdgeInsets.all(10),
@@ -530,20 +486,50 @@ class DetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                SeriesData().series[data]['thumbnail'],
-                              ),
-                              fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black, BlendMode.softLight))),
-                      width: 100,
-                      height: 60,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                              SeriesData().series[data]['thumbnail'],
+                            ),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black, BlendMode.softLight))),
+                    width: 100,
+                    height: 60,
+                    child: GestureDetector(
                       child: Center(
-                        child: Icon(Icons.play_arrow,
+                        child: Icon(Icons.play_circle_outline,
                             size: 35, color: Colors.white),
-                      )),
+                      ),
+                      onTap: () {
+                        print(data);
+                        print(SeriesData().detalleseries[data]);
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: Duration(seconds: 1),
+                              transitionsBuilder: (BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secAnimation,
+                                  Widget child) {
+                                animation = CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.fastLinearToSlowEaseIn);
+                                return ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                    alignment: Alignment.center);
+                              },
+                              pageBuilder: (BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secAnimation) {
+                                return DetailChapter(
+                                    data: SeriesData().detalleseries[data]);
+                              },
+                            ));
+                      },
+                    ),
+                  ),
                   SizedBox(
                     height: 2,
                     child: Container(width: 60, color: Colors.red),
@@ -557,14 +543,15 @@ class DetailsPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     epTitle,
-                    style: TextStyle(color: Colors.white, fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                   SizedBox(
                     height: 10,
                   ),
+                  Icon(Icons.timer),
                   Text(
                     '54 min',
-                    style: TextStyle(color: Colors.white54, fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ],
               ),
@@ -574,7 +561,106 @@ class DetailsPage extends StatelessWidget {
           Flexible(
             child: Text(
               SeriesData().series[data]['description'],
-              style: TextStyle(color: Colors.white30, fontSize: 11),
+              style: TextStyle(fontSize: 11),
+            ),
+          ),
+          Divider(
+            height: 40,
+            thickness: 4,
+          )
+        ],
+      ),
+    );
+  }
+
+  Container episodeBlockLandscape(epTitle, context) {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: ListView(children: <Widget>[
+                      GestureDetector(                        
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                           PageRouteBuilder(
+                              transitionDuration: Duration(seconds: 1),
+                              transitionsBuilder: (BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secAnimation,
+                                  Widget child) {
+                                animation = CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.fastLinearToSlowEaseIn);
+                                return ScaleTransition(
+                                    scale: animation,
+                                    child: child,
+                                    alignment: Alignment.center);
+                              },
+                              pageBuilder: (BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secAnimation) {
+                                return DetailChapter(
+                                    data: SeriesData().detalleseries[data]);
+                              },
+                            )
+                          );
+                        },
+                        child: Container(
+                          child: Image.asset(
+                              SeriesData().series[data]['thumbnail']),
+                          margin: EdgeInsets.symmetric(horizontal: 2.0),
+                          width: 100.0,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    SeriesData().series[data]['thumbnail'],
+                                  ),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black, BlendMode.softLight))),
+                        ),
+                      ),
+                    ]),
+                    width: 100,
+                    height: 100,
+                  ),
+                ],
+              ),
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    epTitle,
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Icon(Icons.timer),
+                  Text(
+                    '54 min',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          Flexible(
+            child: Text(
+              SeriesData().series[data]['description'],
+              style: TextStyle( fontSize: 11),
             ),
           ),
           Divider(color: Colors.black, height: 40)
