@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            Container(
+            Container(            
               margin: EdgeInsets.symmetric(vertical: 5.0),
               height: 200.0,
               child: ListView.builder(
@@ -145,14 +145,10 @@ class _HomePageState extends State<HomePage> {
                                   data:
                                       '${SeriesData().series.keys.elementAt(index)}');
                             },
-                          )
-                        // MaterialPageRoute(
-                        //     builder: (context) => DetailsPage(
-                        //         data:
-                        //             '${SeriesData().series.keys.elementAt(index)}')),
+                          )                        
                       );
                     },
-                    child: Container(
+                    child: Container(                      
                       child: Image.asset(
                           '${SeriesData().series.values.elementAt(index)['thumbnail']}'),
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -280,6 +276,7 @@ class _HomePageState extends State<HomePage> {
       width: double.infinity,
       height: 500.0,
       decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50)),
           color: Colors.blue,
           image: DecorationImage(
               image: AssetImage('assets/images/luci.jpg'),

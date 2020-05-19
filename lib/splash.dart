@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/tabs/comingsoon.dart';
+import 'package:flutterapp/tabs/home.dart';
 import 'dart:async';
-import 'myhome.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _SplashState extends State<Splash> {
   }
 }
 
-Widget vista() {  
+Widget vista() {    
   return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -70,4 +70,25 @@ Widget vista() {
         ],
       ),
     );
+}
+
+
+
+ 
+
+class Contenedor extends StatefulWidget {
+   
+  @override
+  _ContenedorState createState() => _ContenedorState();
+}
+
+class _ContenedorState extends State<Contenedor> {
+ 
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        
+    );
+  }
 }

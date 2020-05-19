@@ -1,19 +1,21 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/myhome.dart';
+import 'package:flutterapp/splash.dart';
 import 'package:flutterapp/tabs/themenotificator.dart';
 import 'package:provider/provider.dart';
 import 'tabs/home.dart';
 import 'tabs/search.dart';
 import 'tabs/comingsoon.dart';
 
-void main() =>  runApp( ChangeNotifierProvider<DynamicTheme>(  
-       builder: (_) => DynamicTheme(),  
-       child: MyHome(),  
-     ), 
-);
+void main() => runApp(
+      ChangeNotifierProvider<DynamicTheme>(
+        create: (_) => DynamicTheme(),
+        child: MyHome(),
+      ),
+    );
 
 class MyHome extends StatefulWidget {
-   
   @override
   MyHomeState createState() => new MyHomeState();
 }
@@ -22,11 +24,18 @@ class MyHome extends StatefulWidget {
 class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
   // Create a tab controller
   TabController controller;
+  final HomePage _homepage = new HomePage();
+  Widget _contenedor = new Contenedor();  
+  final ComingSoonPage _commingsoon = new ComingSoonPage();
+  final SearchPage _searchPage = new SearchPage(); 
+  int pageindex = 0;    
 
   @override
-  initState()  {
+  initState() {
     super.initState();
-    controller = new TabController(length: 3, vsync: this);
+    _contenedor = _homepage;
+      
+    // controller = new TabController(length: 3, vsync: this);
   }
 
   @override
@@ -36,72 +45,66 @@ class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DynamicTheme>(context);      
+  Widget build(BuildContext context) {    
+    final themeProvider = Provider.of<DynamicTheme>(context);
+    // _contenedor = _homepage;
     Map<int, Widget> op = {1: MyHome(), 2: MyHome()};
-    return  MaterialApp(
-        title: "Todo Sobre Series",
-        debugShowCheckedModeBanner: false,
-        theme: themeProvider.getDarkMode() ? ThemeData.dark() : ThemeData.light(),          
-        // home: home(controller) ,
-        home: CustomSplash(
+    return MaterialApp(
+      title: "Todo Sobre Series",
+      debugShowCheckedModeBanner: false,
+      theme: themeProvider.getDarkMode() ? ThemeData.dark() : ThemeData.light(),      
+      home: CustomSplash(
         imagePath: 'assets/images/flix.png',
-        backGroundColor: Colors.red,        
+        backGroundColor: Colors.red,
         animationEffect: 'zoom-in',
         logoSize: 200,
-        home: home(controller),
+        home: Scaffold(              
+          bottomNavigationBar: CurvedNavigationBar(                    
+            // buttonBackgroundColor: Colors.white,                
+            backgroundColor: Colors.white,
+            color: Colors.blue,
+            index: 0,            
+            height: 50,
+            items: <Widget>[
+              Icon(Icons.home),
+              Icon(Icons.search),
+              Icon(Icons.settings),
+            ],
+            animationCurve: Curves.bounceInOut,
+            animationDuration: Duration(milliseconds: 250),
+            onTap: (int index) {
+              setState(() {
+                _contenedor = pageChooser(index);                
+              });
+            },      
+          ),
+          body:  _contenedor,
+        ),
         customFunction: duringSplash,
         duration: 4500,
         type: CustomSplashType.StaticDuration,
         outputAndHome: op,
-    ),
-        );
-        // home_(controller));
+      ),
+    );
+    // home_(controller));
   }
 
-  
+  Widget pageChooser(int page) {
+    switch (page) {
+        case 0:
+          return _homepage;
+        case 1:
+          return _searchPage;
+        break;
+        case 2:
+          return _commingsoon;
+        break;        
+    }
+  }
 }
 
 Function duringSplash = () {
   return 5;
 };
 
-Widget home(controller) {
-  return Scaffold(
-    body: new TabBarView(
-      // Add tabs as widgets
-      children: <Widget>[
-        new HomePage(),
-        new SearchPage(),
-        new ComingSoonPage()
-      ],
-      // set the controller
-      controller: controller,
-    ),
-    resizeToAvoidBottomPadding: true,
-    bottomNavigationBar: new Material(      
-      elevation: 2.0,
-     
-      color: Colors.black87,
-      child: new TabBar(
-        labelPadding: EdgeInsets.symmetric(horizontal: 2.0),
-        indicatorColor: Colors.black,
-        tabs: <Tab>[
-          new Tab(
-            icon: new Icon(Icons.home),
-            text: 'Inicio',
-          ),
-          new Tab(
-            icon: new Icon(Icons.search),
-            text: 'Buscar',
-          ),
-          new Tab(
-            icon: new Icon(Icons.settings),
-            text: 'Ajustes',
-          ),
-        ],        
-        controller: controller,
-      ),
-    ),
-  );
-}
+

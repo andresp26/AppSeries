@@ -26,7 +26,7 @@ class DetailChapter extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 15),
             height: 500,
-            width: 350,
+            width: 400  ,
             child: new Column(
               children: <Widget>[
                 Icon(
